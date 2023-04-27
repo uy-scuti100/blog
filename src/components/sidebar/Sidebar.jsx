@@ -1,8 +1,19 @@
 import { BsTwitter } from "react-icons/bs";
 import { BsPinterest, BsGithub } from "react-icons/bs";
 import { AiFillInstagram } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Sidebar = () => {
+  const [cats, setCats] = useState([]);
+  useEffect(() => {
+    const getCats = async () => {
+      const res = await axios.get("http://localhost:5000/api/categories");
+      setCats(res.data);
+    };
+    getCats();
+  }, []);
   return (
     <div className="fixed px-4">
       <div>
@@ -24,10 +35,13 @@ const Sidebar = () => {
         </h1>
         <span>
           <ul className="text-[#565555] flex flex-col gap-5 pb-5 font-[roboto]">
-            <li>#Music</li>
-            <li>#Nature</li>
-            <li>#Tech</li>
-            <li>#Lifestyle</li>
+            {cats.map((cat) => (
+              <Link to={`http://localhost:5000/api/?cat=${cat.name}`}>
+                <ul>
+                  <li key={cat._id}>{cat.name}</li>
+                </ul>
+              </Link>
+            ))}
           </ul>
         </span>
 

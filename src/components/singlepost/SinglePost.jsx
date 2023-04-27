@@ -1,56 +1,127 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
+import { Context } from "../../context/Context";
 
 const SinglePost = () => {
+  const { user } = useContext(Context);
+  const location = useLocation();
+  const path = location.pathname.split("/")[2];
+  const [post, setPost] = useState({});
+  const PF = "http://localhost:5000/images/";
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+  const [updateMode, setUpdateMode] = useState(false);
+
+  // request
+
+  useEffect(() => {
+    const getPost = async () => {
+      const res = await axios.get("http://localhost:5000/api/posts/" + path);
+      setPost(res.data);
+      setTitle(res.data.title);
+      setDesc(res.data.desc);
+    };
+    getPost();
+  }, [path]);
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:5000/api/posts/${post._id}`, {
+        data: { username: user.username },
+      });
+      window.location.replace("/");
+    } catch (error) {}
+  };
+  const handleUpdate = async () => {
+    try {
+      await axios.put(`http://localhost:5000/api/posts/${post._id}`, {
+        username: user.username,
+        title,
+        desc,
+      });
+      setUpdateMode(false);
+    } catch (error) {}
+  };
   return (
-    <div>
-      <div>
+    <div className="mt-4">
+      <div className="w-full">
         {/* post image */}
-        <img
-          src="/images/hunter.webp"
-          alt="/"
-          className="rounded-md object-cover md:h-[500px] h-[250px] w-full mt-4"
-        />
+        {post.photo && (
+          <img
+            src={PF + post.photo}
+            alt="/"
+            className="rounded-md object-cover md:h-[500px] h-[250px] w-full mt-4"
+          />
+        )}
       </div>
       <div className="flex justify-between items-center my-5">
-        <h1 className="text-[18px] md:text-[24px] font-bold font-[miracle] capitalize">
-          Lorem ipsum dolor sit amet.
-        </h1>
-        <div className="flex gap-5">
-          <AiOutlineEdit size={24} style={{ color: "teal" }} />
-          <AiOutlineDelete size={24} style={{ color: "tomato" }} />
-        </div>
+        {updateMode ? (
+          <input
+            type="text"
+            value={title}
+            className="text-[18px] md:text-[24px] font-bold font-[miracle] capitalize"
+            onChange={(e) => setTitle(e.target.value)}
+            autoFocus
+          />
+        ) : (
+          <h1 className="text-[18px] md:text-[24px] font-bold font-[miracle] capitalize">
+            {title}
+          </h1>
+        )}
+        {post.username === user?.username && (
+          <div className="flex gap-5">
+            <AiOutlineEdit
+              size={24}
+              style={{ color: "teal" }}
+              onClick={() => setUpdateMode(!updateMode)}
+              cursor="pointer"
+            />
+            <AiOutlineDelete
+              size={24}
+              style={{ color: "tomato" }}
+              onClick={handleDelete}
+              cursor="pointer"
+            />
+          </div>
+        )}
       </div>
       <div className="flex justify-between my-5 text-[#be9656]">
         <span>
-          Author: <b>Uy Scuti</b>
+          Author:
+          <Link to={`/?user=${post.username}`}>
+            <b>{post.username}</b>
+          </Link>
         </span>
-        <span className="italic">1 hour ago</span>
+        <span className="italic">
+          {new Date(post.createdAt).toDateString()}
+        </span>
       </div>
-      <p className="text-[#666] text-[14px] md:text-[18px] leading-6 first-letter:md:text-[55px] first-letter:text-[35px] first-letter:font-[montserrat] first-letter:ml-5 first-letter:font-semibold">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus
-        voluptatem nihil omnis eos accusamus laborum quaerat aperiam nemo
-        dignissimos sequi provident laudantium natus tempora quod, quidem beatae
-        voluptates veniam, quos et id inventore numquam impedit voluptate
-        pariatur. Possimus reprehenderit placeat illo eos quae culpa quasi
-        magnam dolorem voluptate voluptates, beatae unde tenetur corporis
-        repellat consequatur sequi quas iste minus hic accusantium adipisci?
-        Fuga commodi esse ex doloremque mollitia unde maiores voluptates
-        repellendus itaque voluptate! Esse amet nam ducimus, alias quisquam
-        obcaecati facilis impedit tempore eos deleniti facere nihil recusandae.
-        Earum id praesentium repellendus tempore odio vero eum delectus,
-        veritatis similique ullam dignissimos, ipsam vitae perferendis? Tenetur
-        quos at, deleniti reprehenderit magni rem fugiat iste ipsa eos!
-        Exercitationem a minima dolorem vero. Facilis repellendus repellat vitae
-        similique maiores molestias, minus eos, officia ipsa quasi quis
-        voluptate debitis? Enim atque vero id odio eius ab esse non laudantium
-        suscipit blanditiis culpa commodi quod omnis ipsum reprehenderit itaque
-        perferendis vel dolorum, sit nostrum doloribus maiores ullam similique.
-        Aperiam, cumque assumenda vel eius praesentium delectus beatae veritatis
-        exercitationem nam laudantium nisi impedit aliquid perferendis eligendi
-        ipsam, facere quis autem vero modi id similique eos quia quo? Aliquam
-        aspernatur autem repellat vel ab labore optio?
-      </p>
+      {updateMode ? (
+        <textarea
+          cols="30"
+          rows="10"
+          className="text-[#666] text-[14px] md:text-[18px] leading-6 first-letter:md:text-[55px] w-full border-2"
+          value={desc}
+          autoFocus
+          onChange={(e) => setDesc(e.target.value)}
+        ></textarea>
+      ) : (
+        <p className="text-[#666] text-[14px] md:text-[18px] leading-6 first-letter:md:text-[55px] first-letter:text-[35px] first-letter:font-[montserrat] first-letter:ml-5 first-letter:font-semibold first-letter:uppercase  ">
+          {desc}
+        </p>
+      )}
+      {updateMode && (
+        <div className="flex justify-end mt-5">
+          <button
+            className=" px-4 py-1 bg-[#000] text-white"
+            onClick={handleUpdate}
+          >
+            Update
+          </button>
+        </div>
+      )}
     </div>
   );
 };

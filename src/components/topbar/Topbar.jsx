@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Flyout from "../flyout/Flyout";
 import { Link } from "react-router-dom";
+import { Context } from "../../context/Context";
 
 const Topbar = () => {
+  const { user } = useContext(Context);
   const [isOpen, setIsOpen] = useState(false);
+  const PF = "http://localhost:5000/images/";
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
@@ -33,8 +36,8 @@ const Topbar = () => {
               cursor="pointer"
             >
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M4.1 11.06a6.95 6.95 0 1 1 13.9 0 6.95 6.95 0 0 1-13.9 0zm6.94-8.05a8.05 8.05 0 1 0 5.13 14.26l3.75 3.75a.56.56 0 1 0 .8-.79l-3.74-3.73A8.05 8.05 0 0 0 11.04 3v.01z"
                 fill="currentColor"
               ></path>
@@ -79,8 +82,8 @@ const Topbar = () => {
               cursor="pointer"
             >
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M4.1 11.06a6.95 6.95 0 1 1 13.9 0 6.95 6.95 0 0 1-13.9 0zm6.94-8.05a8.05 8.05 0 1 0 5.13 14.26l3.75 3.75a.56.56 0 1 0 .8-.79l-3.74-3.73A8.05 8.05 0 0 0 11.04 3v.01z"
                 fill="currentColor"
               ></path>
@@ -97,20 +100,29 @@ const Topbar = () => {
             <path
               d="M15 18.5a3 3 0 1 1-6 0"
               stroke="currentColor"
-              stroke-linecap="round"
+              strokeLinecap="round"
             ></path>
             <path
               d="M5.5 10.53V9a6.5 6.5 0 0 1 13 0v1.53c0 1.42.56 2.78 1.57 3.79l.03.03c.26.26.4.6.4.97v2.93c0 .14-.11.25-.25.25H3.75a.25.25 0 0 1-.25-.25v-2.93c0-.37.14-.71.4-.97l.03-.03c1-1 1.57-2.37 1.57-3.79z"
               stroke="currentColor"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             ></path>
           </svg>
           <div className="flex items-center gap-2">
-            <img
-              src="/images/download.jpg"
-              alt="/"
-              className="w-[32px] h-[32px] rounded-full object-cover cursor-pointer"
-            />
+            <Link to="/settings">
+              {" "}
+              <img
+                src={
+                  user && user.profilePic
+                    ? PF + user.profilePic
+                    : "/images/download.jpg"
+                }
+                alt="Profile Picture"
+                className="w-[32px] h-[32px] rounded-full object-cover
+            cursor-pointer"
+              />
+            </Link>
+
             <svg
               width="12px"
               height="12px"
@@ -120,7 +132,7 @@ const Topbar = () => {
             >
               <path
                 d="M3.85 5.15a.5.5 0 0 0-.7.7l4.35 4.36 4.35-4.36a.5.5 0 1 0-.7-.7L7.5 8.79 3.85 5.15z"
-                fill-rule="evenodd"
+                fillRule="evenodd"
               ></path>
             </svg>
           </div>

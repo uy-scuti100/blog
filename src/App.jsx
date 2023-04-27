@@ -5,9 +5,12 @@ import Single from "./pages/Single";
 import Write from "./pages/Write";
 import Login from "./pages/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "./context/Context";
+import Settings from "./components/settings/Settings";
 
 function App() {
-  const user = true;
+  const { user } = useContext(Context);
   return (
     <BrowserRouter>
       <div className="max-w-[1400px] min-h-screen w-full">
@@ -18,6 +21,7 @@ function App() {
           <Route path="/register" element={user ? <Home /> : <Register />} />
           <Route path="/post/:postId" element={<Single />} />
           <Route path="/write" element={user ? <Write /> : <Register />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
     </BrowserRouter>

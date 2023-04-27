@@ -1,7 +1,13 @@
+import { useContext } from "react";
 import { CiLogout } from "react-icons/ci";
 import { Link } from "react-router-dom";
+import { Context } from "../../context/Context";
 
 const Flyout = ({ isOpen }) => {
+  const { dispatch } = useContext(Context);
+  const handleLogout = () => {
+    dispatch({ type: "logOut" });
+  };
   return (
     <div
       className={
@@ -25,7 +31,7 @@ const Flyout = ({ isOpen }) => {
               <path
                 d="M3.5 21.5v-4.34C3.5 15.4 7.3 14 12 14s8.5 1.41 8.5 3.16v4.34"
                 stroke="currentColor"
-                stroke-linecap="round"
+                strokeLinecap="round"
               ></path>
             </svg>
             <p>Profile</p>
@@ -47,7 +53,7 @@ const Flyout = ({ isOpen }) => {
             <path
               d="M12.5 2.75h-8a2 2 0 0 0-2 2v11.5"
               stroke="currentColor"
-              stroke-linecap="round"
+              strokeLinecap="round"
             ></path>
           </svg>
 
@@ -69,7 +75,7 @@ const Flyout = ({ isOpen }) => {
             <path
               d="M8 8.5h8M8 15.5h5M8 12h8"
               stroke="currentColor"
-              stroke-linecap="round"
+              strokeLinecap="round"
             ></path>
           </svg>
           <p>Posts</p>
@@ -92,7 +98,10 @@ const Flyout = ({ isOpen }) => {
           <p>Info</p>
         </div>
         {/* logout */}{" "}
-        <div className="flex gap-2 cursor-pointer text-[#757575] hover:text-black">
+        <div
+          className="flex gap-2 cursor-pointer text-[#757575] hover:text-black"
+          onClick={handleLogout}
+        >
           <CiLogout size="24" />
 
           <p>Logout</p>
