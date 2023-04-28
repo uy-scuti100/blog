@@ -74,12 +74,6 @@ const Settings = () => {
       console.error("Failed to delete user", error);
     }
   };
-  let imageSrc = "/images/download.jpg";
-  if (file) {
-    imageSrc = URL.createObjectURL(file);
-  } else {
-    imageSrc = PF + user.profilePic;
-  }
 
   return (
     <div>
@@ -102,7 +96,7 @@ const Settings = () => {
             <label className="text-[#666]">Profile Picture</label>
             <div className="flex items-center gap-2 py-5">
               <img
-                src={imageSrc}
+                src={file ? URL.createObjectURL(file) : PF + user.profilePic}
                 alt="/"
                 className="w-[70px] h-[70px] object-cover rounded-lg"
               />

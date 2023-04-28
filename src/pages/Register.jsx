@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [username, setUsername] = useState();
@@ -8,20 +10,26 @@ const Register = () => {
   const [password, setPassword] = useState();
   const [error, setError] = useState(false);
 
+  const showToastMessage = () => {
+    toast.success(" Registration Successful !", {
+      position: toast.POSITION.TOP_LEFT,
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(true);
     try {
       const res = await axios.post("http://localhost:5000/api/auth/register", {
         username,
         email,
         password,
       });
+      showToastMessage();
       res.data && window.location.replace("/login");
     } catch (error) {
-      setError(true);
+      setError(!error);
     }
   };
+
   return (
     <div className="login text-[#000000] ">
       <div className="flex flex-col gap-10 items-center justify-center px-6 ">
@@ -77,6 +85,9 @@ const Register = () => {
             Something Went Wrong !!!
           </div>
         )}
+      </div>
+      <div>
+        <ToastContainer />
       </div>
     </div>
   );

@@ -2,11 +2,20 @@ import React, { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../context/Context";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const userRef = useRef();
   const passwordRef = useRef();
   const { dispatch, isFetching } = useContext(Context);
+
+  const showToastMessage = () => {
+    toast.success(" Login Successful !", {
+      position: toast.POSITION.TOP_LEFT,
+    });
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     dispatch({ type: "loginInit" });
@@ -15,6 +24,7 @@ const Login = () => {
         username: userRef.current.value,
         password: passwordRef.current.value,
       });
+      showToastMessage();
       dispatch({ type: "loginValid", payload: res.data });
     } catch (error) {
       dispatch({ type: "loginFailed" });
@@ -60,6 +70,9 @@ const Login = () => {
             <span className="text-blue-400 cursor-pointer">Register Now</span>
           </Link>
         </div>
+      </div>
+      <div>
+        <ToastContainer />
       </div>
     </div>
   );
