@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MdOutlineChangeCircle } from "react-icons/md";
 import Sidebar from "../sidebar/Sidebar";
 import Topbar from "../topbar/Topbar";
@@ -20,6 +20,13 @@ const Settings = () => {
       position: toast.POSITION.TOP_LEFT,
     });
   };
+
+  useEffect(() => {
+    setUsername(user.username);
+    setEmail(user.email);
+    setPassword("********");
+  }, [user]);
+
   const handleSubmit = async (e) => {
     dispatch({ type: "updateInit" });
     e.preventDefault();
@@ -46,6 +53,7 @@ const Settings = () => {
       );
       showToastMessage();
       dispatch({ type: "updateValid", payload: res.data });
+      window.location.replace("/");
     } catch (error) {
       console.log(error);
       dispatch({ type: "updateFailed" });
@@ -66,6 +74,12 @@ const Settings = () => {
       console.error("Failed to delete user", error);
     }
   };
+  let imageSrc = "/images/download.jpg";
+  if (file) {
+    imageSrc = URL.createObjectURL(file);
+  } else {
+    imageSrc = PF + user.profilePic;
+  }
 
   return (
     <div>
@@ -77,18 +91,18 @@ const Settings = () => {
             <span className="md:text-[25px] font-bold text-[20px]">
               Update Account
             </span>
-            <span
+            {/* <span
               className="md:text-[12px] text-[10px] text-red-700 cursor-pointer bg-red-300 px-2 py-1 rounded-full"
               onClick={handleDelete}
             >
               Delete Account
-            </span>
+            </span> */}
           </div>
           <form onSubmit={handleSubmit}>
             <label className="text-[#666]">Profile Picture</label>
             <div className="flex items-center gap-2 py-5">
               <img
-                src={file ? URL.createObjectURL(file) : PF + user.profilePic}
+                src={imageSrc}
                 alt="/"
                 className="w-[70px] h-[70px] object-cover rounded-lg"
               />
