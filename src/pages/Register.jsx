@@ -18,11 +18,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
-        username,
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://blog-psi-plum.vercel.app/api/auth/register",
+        {
+          username,
+          email,
+          password,
+        }
+      );
       showToastMessage();
       res.data && window.location.replace("/login");
     } catch (error) {
@@ -47,7 +50,7 @@ const Register = () => {
           {/* username */}
           <input
             type="text"
-            placeholder="johndgloe123"
+            placeholder="johndoe123"
             className="w-[300px] bg-transparent px-6 py-2 md:px-8 border font-[600] text-[#000000] focus:placeholder:text-[#000000]  placeholder:text-[#000000] placeholder:text-[12px] placeholder:opacity-50"
             onChange={(e) => setUsername(e.target.value)}
           />

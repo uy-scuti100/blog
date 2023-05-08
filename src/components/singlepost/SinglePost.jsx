@@ -9,7 +9,7 @@ const SinglePost = () => {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
   const [post, setPost] = useState({});
-  const PF = "http://localhost:5000/images/";
+  const PF = "https://blog-psi-plum.vercel.app/images/";
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [updateMode, setUpdateMode] = useState(false);
@@ -18,7 +18,9 @@ const SinglePost = () => {
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await axios.get("http://localhost:5000/api/posts/" + path);
+      const res = await axios.get(
+        "https://blog-psi-plum.vercel.app/api/posts/" + path
+      );
       setPost(res.data);
       setTitle(res.data.title);
       setDesc(res.data.desc);
@@ -28,19 +30,25 @@ const SinglePost = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/posts/${post._id}`, {
-        data: { username: user.username },
-      });
+      await axios.delete(
+        `https://blog-psi-plum.vercel.app/api/posts/${post._id}`,
+        {
+          data: { username: user.username },
+        }
+      );
       window.location.replace("/");
     } catch (error) {}
   };
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/posts/${post._id}`, {
-        username: user.username,
-        title,
-        desc,
-      });
+      await axios.put(
+        `https://blog-psi-plum.vercel.app/api/posts/${post._id}`,
+        {
+          username: user.username,
+          title,
+          desc,
+        }
+      );
       setUpdateMode(false);
     } catch (error) {}
   };

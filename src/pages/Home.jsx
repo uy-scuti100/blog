@@ -11,7 +11,9 @@ const Home = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/posts" + search);
+        const res = await axios.get(
+          "https://blog-psi-plum.vercel.app/api/posts" + search
+        );
         const posts = res.data;
         posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setPosts(posts);

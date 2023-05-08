@@ -12,7 +12,7 @@ const Settings = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const PF = "http://localhost:5000/images/";
+  const PF = "https://blog-psi-plum.vercel.app/images/";
   const { user, dispatch } = useContext(Context);
 
   const showToastMessage = () => {
@@ -43,12 +43,12 @@ const Settings = () => {
       data.append("file", file);
       updatedUser.profilePic = filename;
       try {
-        await axios.post("http://localhost:5000/api/upload", data);
+        await axios.post("https://blog-psi-plum.vercel.app/api/upload", data);
       } catch (error) {}
     }
     try {
       const res = await axios.put(
-        "http://localhost:5000/api/users/" + user._id,
+        "https://blog-psi-plum.vercel.app/api/users/" + user._id,
         updatedUser
       );
       showToastMessage();
@@ -63,9 +63,12 @@ const Settings = () => {
   // Function to handle user delete
   const handleDelete = async (userId) => {
     try {
-      await axios.delete(`http//localhost:5000/api/users/${userId}`, {
-        data: { userId: userId },
-      });
+      await axios.delete(
+        `https://blog-psi-plum.vercel.app/api/users/${userId}`,
+        {
+          data: { userId: userId },
+        }
+      );
       // Redirect to a success page or perform any other action
       window.location.replace("/register");
       console.log("User and associated posts have been deleted");

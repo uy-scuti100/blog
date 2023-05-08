@@ -9,7 +9,9 @@ const Sidebar = () => {
   const [cats, setCats] = useState([]);
   useEffect(() => {
     const getCats = async () => {
-      const res = await axios.get("http://localhost:5000/api/categories");
+      const res = await axios.get(
+        "https://blog-psi-plum.vercel.app/api/categories"
+      );
       setCats(res.data);
     };
     getCats();
@@ -36,7 +38,9 @@ const Sidebar = () => {
         <span>
           <ul className="text-[#565555] flex flex-col gap-5 pb-5 font-[roboto]">
             {cats.map((cat) => (
-              <Link to={`http://localhost:5000/api/?cat=${cat.name}`}>
+              <Link
+                to={`https://blog-psi-plum.vercel.app/api/?cat=${cat.name}`}
+              >
                 <ul>
                   <li key={cat._id}>{cat.name}</li>
                 </ul>

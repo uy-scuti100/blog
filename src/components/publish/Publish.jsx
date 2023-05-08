@@ -22,14 +22,17 @@ const Publish = () => {
       data.append("file", file);
       newPost.photo = filename;
       try {
-        await axios.post("http://localhost:5000/api/upload", data);
+        await axios.post("https://blog-psi-plum.vercel.app/api/upload", data);
       } catch (error) {
         console.log(error);
       }
     }
     try {
-      const res = await axios.post("http://localhost:5000/api/posts", newPost);
-      window.location.replace("http://localhost:5173/post/" + res.data._id);
+      const res = await axios.post(
+        "https://blog-psi-plum.vercel.app/api/posts",
+        newPost
+      );
+      window.location.replace("/post/" + res.data._id);
     } catch (error) {
       console.log(error);
     }

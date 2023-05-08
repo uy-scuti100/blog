@@ -11,10 +11,13 @@ const Login = () => {
     e.preventDefault();
     dispatch({ type: "loginInit" });
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        username: userRef.current.value,
-        password: passwordRef.current.value,
-      });
+      const res = await axios.post(
+        "https://blog-psi-plum.vercel.app/api/auth/login",
+        {
+          username: userRef.current.value,
+          password: passwordRef.current.value,
+        }
+      );
       dispatch({ type: "loginValid", payload: res.data });
     } catch (error) {
       dispatch({ type: "loginFailed" });
